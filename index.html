@@ -1,226 +1,311 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>StreamPlay+</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>StreamPlay+ | Streaming Simples</title>
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#0e0e0e;
-  color:#fff;
-}
-
-/* HEADER */
-header{
-  background:#111;
-  padding:15px 25px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.logo{
-  font-size:22px;
-  font-weight:bold;
-  color:#ff0000;
-}
-.search-box{
-  display:flex;
-  gap:10px;
-}
-.search-box input{
-  padding:10px;
-  width:260px;
-  border-radius:6px;
-  border:none;
-}
-.search-box button{
-  background:#ff0000;
-  border:none;
-  padding:10px 18px;
-  color:#fff;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* MAIN */
-main{
-  padding:20px;
-}
-iframe{
-  width:100%;
-  height:70vh;
-  border:none;
-  border-radius:10px;
-}
-
-/* AD FLOAT */
-.ad-float{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#1c1c1c;
-  padding:15px;
-  width:260px;
-  border-radius:12px;
-  box-shadow:0 0 20px rgba(0,0,0,.7);
-  z-index:999;
-}
-.ad-float h4{
-  margin:0 0 8px;
-  color:#00ff99;
-}
-.ad-float p{
-  font-size:13px;
-  color:#ccc;
-}
-.ad-float a{
-  display:block;
-  margin-top:10px;
-  text-align:center;
-  padding:10px;
-  background:#00ff99;
-  color:#000;
-  border-radius:6px;
-  text-decoration:none;
-  font-weight:bold;
-}
-.close-ad{
-  position:absolute;
-  top:6px;
-  right:10px;
-  cursor:pointer;
-  color:#999;
-}
-
-/* PREMIUM */
-.premium{
-  margin-top:30px;
-  background:#141414;
-  padding:25px;
-  border-radius:12px;
-}
-.plans{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-}
-.plan{
-  border:1px solid #222;
-  padding:20px;
-  border-radius:10px;
-  text-align:center;
-}
-.plan h3{
-  color:#ff0000;
-}
-.plan .price{
-  font-size:26px;
-  margin:10px 0;
-}
-.plan button{
-  margin-top:10px;
-  padding:10px;
-  width:100%;
-  background:#ff0000;
-  border:none;
-  color:#fff;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:15px;
-  font-size:12px;
-  color:#777;
-}
+  body {
+    background: #121212;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 0;
+  }
+  header {
+    background: #1f1f1f;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 {
+    color: #e22;
+    margin: 0;
+  }
+  header form {
+    display: flex;
+    gap: 8px;
+  }
+  header input[type="search"] {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: none;
+    font-size: 16px;
+  }
+  header button {
+    background: #e22;
+    border: none;
+    padding: 7px 14px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+  header button:hover {
+    background: #c11;
+  }
+  main {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 20px 40px;
+  }
+  section.videos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 20px;
+  }
+  article.video {
+    background: #222;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 6px rgba(255,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  article.video:hover {
+    transform: scale(1.04);
+  }
+  article.video img {
+    width: 100%;
+    display: block;
+  }
+  article.video h3 {
+    margin: 8px 12px;
+    font-size: 18px;
+    color: #f33;
+  }
+  footer {
+    background: #1f1f1f;
+    color: #aaa;
+    text-align: center;
+    padding: 14px 10px;
+  }
+  button#btnLogin, button#btnPlano {
+    margin-top: 10px;
+    background: #e22;
+    border: none;
+    padding: 10px 18px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 6px;
+  }
+  /* Modal */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .modal-bg.active {
+    display: flex;
+  }
+  .modal {
+    background: #222;
+    padding: 20px 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    color: #eee;
+    position: relative;
+  }
+  .modal h2 {
+    margin-top: 0;
+    color: #e33;
+  }
+  .modal p {
+    margin: 14px 0;
+  }
+  .modal button.close-btn {
+    position: absolute;
+    top: 8px; right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: #e33;
+    cursor: pointer;
+  }
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 10px 8px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+  }
+  /* Premium content */
+  .premium {
+    background: #2a2a2a;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+  }
 </style>
 </head>
-
 <body>
 
 <header>
-  <div class="logo">StreamPlay+</div>
-  <div class="search-box">
-    <input id="search" placeholder="Pesquisar filmes ou séries...">
-    <button onclick="buscar()">Pesquisar</button>
-  </div>
+  <h1>StreamPlay+</h1>
+  <form id="searchForm" onsubmit="return buscarVideos()">
+    <input type="search" id="query" placeholder="Pesquisar vídeos no YouTube..." required />
+    <button type="submit">Pesquisar</button>
+  </form>
 </header>
 
 <main>
-  <iframe id="player"
-    src="https://www.youtube.com/embed?listType=search&list=trailers filmes">
-  </iframe>
+  <button id="btnLogin">Login</button>
+  <button id="btnPlano">Comprar Plano</button>
 
-  <section class="premium">
-    <h2>🌟 Planos Premium</h2>
-    <p>Assista sem anúncios e com acesso antecipado.</p>
+  <section class="videos" id="videoList">
+    <!-- Vídeos fixos -->
+  </section>
 
-    <div class="plans">
-      <div class="plan">
-        <h3>Básico</h3>
-        <div class="price">R$ 9,90</div>
-        <p>Sem anúncios</p>
-        <button onclick="comprar('Básico')">Assinar</button>
-      </div>
-
-      <div class="plan">
-        <h3>Pro</h3>
-        <div class="price">R$ 19,90</div>
-        <p>Sem anúncios + Suporte</p>
-        <button onclick="comprar('Pro')">Assinar</button>
-      </div>
-
-      <div class="plan">
-        <h3>Ultra</h3>
-        <div class="price">R$ 29,90</div>
-        <p>Tudo liberado</p>
-        <button onclick="comprar('Ultra')">Assinar</button>
-      </div>
-    </div>
+  <section class="premium" id="premiumContent" style="display:none;">
+    <h2>Conteúdo Premium</h2>
+    <p>Bem-vindo ao conteúdo exclusivo! Aqui você pode ver informações e vídeos que só assinantes premium têm acesso.</p>
+    <ul>
+      <li>Lista de usuários que compraram</li>
+      <li>Estatísticas da loja</li>
+      <li>Mais recursos em breve...</li>
+    </ul>
   </section>
 </main>
 
-<!-- ANÚNCIO FLUTUANTE -->
-<div class="ad-float" id="ad">
-  <span class="close-ad" onclick="document.getElementById('ad').style.display='none'">✖</span>
-  <h4>🔥 Oferta Especial</h4>
-  <p>Compre seu site profissional agora mesmo.</p>
-  <a href="https://wa.me/5521993137000?text=Olá,%20Gostaria%20de%20Comprar%20um%20Domínio" target="_blank">
-    Falar no WhatsApp
-  </a>
-</div>
-
 <footer>
-© 2025 StreamPlay+ • Conteúdo exibido via YouTube
+  StreamPlay+ © 2025 - Desenvolvido por Davi
 </footer>
 
-<script>
-function buscar(){
-  const q = document.getElementById("search").value;
-  if(!q) return;
-  document.getElementById("player").src =
-    "https://www.youtube.com/embed?listType=search&list=" +
-    encodeURIComponent(q);
-}
+<!-- Modal Login -->
+<div class="modal-bg" id="modalLogin">
+  <div class="modal">
+    <button class="close-btn" onclick="fecharModal('modalLogin')">&times;</button>
+    <h2>Login</h2>
+    <p>Usuários autorizados: <b>Davi</b> (senha: 0), <b>Wallace</b> (senha: 1)</p>
+    <input type="text" id="loginUser" placeholder="Usuário" autocomplete="off" />
+    <input type="password" id="loginPass" placeholder="Senha" autocomplete="off" />
+    <button onclick="fazerLogin()">Entrar</button>
+    <p id="loginMsg" style="color:#f44;"></p>
+  </div>
+</div>
 
-function comprar(plano){
-  alert(
-    "Plano: " + plano +
-    "\n\nPague via Pix:\n" +
-    "Chave: davi.brgamer007@gmail.com\n\n" +
-    "Após o pagamento, envie o comprovante no WhatsApp."
-  );
-  window.open(
-    "https://wa.me/5521993137000?text=Olá,%20Gostaria%20de%20assinar%20o%20plano%20" + plano,
-    "_blank"
-  );
-}
+<!-- Modal Plano -->
+<div class="modal-bg" id="modalPlano">
+  <div class="modal">
+    <button class="close-btn" onclick="fecharModal('modalPlano')">&times;</button>
+    <h2>Comprar Plano Premium</h2>
+    <p>Para assinar, faça o pagamento via PIX com a chave abaixo:</p>
+    <p style="font-weight:bold; font-size:1.2em; color:#0f0;">davi.brgamer007@gmail.com</p>
+    <p>Envie o comprovante pelo chat ou contato do site. Após confirmação, seu acesso será liberado.</p>
+    <p>Você tem <span id="timer">10:00</span> minutos para concluir o pagamento.</p>
+  </div>
+</div>
+
+<script>
+  // Lista fixa de vídeos para mostrar
+  const videos = [
+    {
+      id: "dQw4w9WgXcQ",
+      titulo: "Exemplo de Vídeo 1",
+      capa: "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
+    },
+    {
+      id: "3JZ_D3ELwOQ",
+      titulo: "Exemplo de Vídeo 2",
+      capa: "https://img.youtube.com/vi/3JZ_D3ELwOQ/hqdefault.jpg"
+    },
+    {
+      id: "L_jWHffIx5E",
+      titulo: "Exemplo de Vídeo 3",
+      capa: "https://img.youtube.com/vi/L_jWHffIx5E/hqdefault.jpg"
+    },
+  ];
+
+  const videoList = document.getElementById('videoList');
+  function mostrarVideos() {
+    videoList.innerHTML = '';
+    videos.forEach(video => {
+      const article = document.createElement('article');
+      article.className = 'video';
+      article.innerHTML = `
+        <img src="${video.capa}" alt="Capa do vídeo ${video.titulo}" />
+        <h3>${video.titulo}</h3>
+      `;
+      article.onclick = () => {
+        window.open(`https://www.youtube.com/watch?v=${video.id}`, '_blank');
+      };
+      videoList.appendChild(article);
+    });
+  }
+  mostrarVideos();
+
+  // Busca do YouTube via URL
+  function buscarVideos() {
+    const query = document.getElementById('query').value.trim();
+    if(query) {
+      const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+      window.open(url, '_blank');
+    }
+    return false;
+  }
+
+  // Login simples
+  const usuarios = {
+    "Davi": "0",
+    "Wallace": "1"
+  };
+  function fazerLogin() {
+    const user = document.getElementById('loginUser').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+    const msg = document.getElementById('loginMsg');
+    if (usuarios[user] && usuarios[user] === pass) {
+      msg.textContent = "Login bem sucedido!";
+      msg.style.color = "#4f4";
+      document.getElementById('modalLogin').classList.remove('active');
+      document.getElementById('premiumContent').style.display = 'block';
+      document.getElementById('btnLogin').style.display = 'none';
+    } else {
+      msg.textContent = "Usuário ou senha inválidos!";
+      msg.style.color = "#f44";
+    }
+  }
+  function fecharModal(id) {
+    document.getElementById(id).classList.remove('active');
+  }
+
+  document.getElementById('btnLogin').onclick = () => {
+    document.getElementById('modalLogin').classList.add('active');
+  };
+  document.getElementById('btnPlano').onclick = () => {
+    document.getElementById('modalPlano').classList.add('active');
+    iniciarTimer(10*60);
+  };
+
+  // Timer para modal de pagamento
+  let timerInterval;
+  function iniciarTimer(segundos) {
+    clearInterval(timerInterval);
+    const elem = document.getElementById('timer');
+    let tempo = segundos;
+    elem.textContent = formatarTempo(tempo);
+    timerInterval = setInterval(() => {
+      tempo--;
+      elem.textContent = formatarTempo(tempo);
+      if(tempo <= 0) {
+        clearInterval(timerInterval);
+        alert("Tempo para pagamento expirou. Feche o modal e tente novamente.");
+        fecharModal('modalPlano');
+      }
+    }, 1000);
+  }
+  function formatarTempo(segundos) {
+    const m = Math.floor(segundos / 60).toString().padStart(2, '0');
+    const s = (segundos % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
 </script>
 
 </body>
